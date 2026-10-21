@@ -349,6 +349,37 @@ html{overflow-x:clip}
   .tl .heads{padding-left:calc(var(--edge) - 10px)}
   #hTL,#vTL,#rTL{padding-bottom:36px}
 }
+/* ---- one whole: one rhythm, rules span the page, content sits in one column, colour only in squares and clips ---- */
+:root{--rhythm:48px}
+.page{gap:var(--rhythm)}
+.phead{padding-bottom:0}
+.phead::after{bottom:calc(var(--rhythm) / -2)}
+.phead.center{padding-block:12px 0}
+#hTL,#vTL,#rTL{padding-bottom:0}
+#hTL::after,#vTL::after,#rTL::after{bottom:calc(var(--rhythm) / -2)}
+.section{gap:16px}
+.grid{gap:var(--rhythm) 14px}
+.yearhead{border-bottom:0;padding-bottom:0;margin-bottom:calc(var(--rhythm) / -2 - 4px)}
+.yearhead:not(:first-child){margin-top:0}
+.foot{margin-top:0}
+.foot-in{padding-block:calc(var(--rhythm) / 2) 40px}
+/* timeline as one tinted band: no inner rules */
+.tl{border:0}
+.tl .tl-bar,.tl .heads,.tl .heads .sp,.tl .head,.tl .grp,.tl .grp-row,.tl .bands,.tl .ruler,.tl .trk{border:0}
+.tl .ruler{background-color:#151515}
+.tl .heads .sp{background:#151515}
+.tl .trk{background:transparent}
+.tl .trks > .trk:nth-child(odd){background:rgba(255,255,255,.018)}
+.tl .grp,.tl .grp-row{background:rgba(255,255,255,.035)}
+.head .code{display:none}
+/* one colour signal per item */
+.thumb::after,.hth-img::after{display:none}
+.card.hl .thumb{outline:1px solid var(--fg-2);outline-offset:3px}
+@media (max-width:720px){
+  :root{--rhythm:40px}
+  .doors{gap:var(--rhythm)}
+  .grid{gap:var(--rhythm)}
+}
 @media (prefers-reduced-motion:reduce){.door img{transition:none}.door:hover img{transform:none}}
 </style>
 </head>
