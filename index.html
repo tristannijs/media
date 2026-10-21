@@ -729,7 +729,8 @@ dialog::backdrop{background:rgba(0,0,0,.88)}
     const b=document.createElement("button"); b.type="button"; b.className="chip"; b.dataset.f=f.id;
     if(f.id!=="all") b.style.setProperty("--c", CK(f.id));
     b.innerHTML=`${f.id!=="all"?'<i class="sw"></i>':''}${f.name} <em>${f.id==="all"?VID.length:count(f.id)}</em>`;
-    b.addEventListener("click",()=>{ location.hash=HASH_OF[f.id]; });
+    // clicking the active filter again switches back to everything
+    b.addEventListener("click",()=>{ location.hash = (f.id!=="all" && b.getAttribute("aria-pressed")==="true") ? "videografie" : HASH_OF[f.id]; });
     chips.appendChild(b);
   });
   const vTL=timeline($("vTL"), vGrid, {
