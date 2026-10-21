@@ -159,7 +159,7 @@ body[data-view="start"] .logo-link{visibility:hidden}
 .hth-cap .eyebrow{font-size:10.5px;display:flex;align-items:center;gap:6px}
 .hth-cap .eyebrow::before{content:"";width:8px;height:8px;background:var(--c)}
 .hth-cap strong{font-size:14px;font-weight:500;line-height:1.3}
-@media (hover:none){.hthumb{display:none}}
+@media (hover:none){.hthumb:not(.touch){display:none}}
 .readout span{color:var(--muted)}
 .trk{position:relative;height:40px;border-bottom:1px solid var(--line);transition:opacity .2s;background:#151515}
 .trk:nth-child(even){background:#181818}
@@ -339,14 +339,16 @@ html.menu-open{overflow:hidden}
 /* timelines run edge to edge; the track names stay lined up with the page content */
 html{overflow-x:clip}
 .tl{--edge:max(var(--gut),calc((100vw - 1320px)/2 + 24px));margin-inline:calc(50% - 50vw);border-left:0;border-right:0;grid-template-columns:calc(var(--edge) + 150px) minmax(0,1fr)}
-.tl .heads{padding-left:calc(var(--edge) - 14px)}
+.tl .heads{padding-left:0}
+.tl .head,.tl .grp{padding-left:var(--edge)}
+.tl .ruler,.tl .bands{touch-action:none}
 .tl .tl-bar{padding-left:var(--edge);padding-right:max(var(--gut-r),calc((100vw - 1320px)/2 + 24px))}
 #hTL,#vTL,#rTL{position:relative;padding-bottom:48px}
 #hTL::after,#vTL::after,#rTL::after,.phead::after{content:"";position:absolute;bottom:0;height:1px;background:var(--line);left:calc(50% - 50vw);right:calc(50% - 50vw)}
 .phead{position:relative;border-bottom:0}
 @media (max-width:720px){
   .tl{grid-template-columns:calc(var(--edge) + 104px) minmax(0,1fr)}
-  .tl .heads{padding-left:calc(var(--edge) - 10px)}
+  .tl .head,.tl .grp{padding-left:var(--edge)}
   #hTL,#vTL,#rTL{padding-bottom:36px}
 }
 /* ---- one whole: one rhythm, rules span the page, content sits in one column, colour only in squares and clips ---- */
@@ -369,7 +371,7 @@ html{overflow-x:clip}
 .tl .ruler{background-color:#151515}
 .tl .heads .sp{background:#151515}
 .tl .trk{background:transparent}
-.tl .trks > .trk:nth-child(odd){background:rgba(255,255,255,.018)}
+
 .tl .grp,.tl .grp-row{background:rgba(255,255,255,.035)}
 .head .code{display:none}
 /* one colour signal per item */
@@ -805,6 +807,23 @@ html{overflow-x:clip}
       const d=e.deltaY||e.deltaX;
       setZoom(zoom*Math.exp(-d*(e.ctrlKey?0.01:0.004)), e.clientX-r.left);
     }, {passive:false});
+    // touch: drag the playhead by sliding a finger along the ruler at the top of the timeline
+    const scrubZone=[ruler, host.querySelector(".bands")].filter(Boolean);
+    let scrubbing=false;
+    function scrubTo(cx,cy){
+      const r=inner.getBoundingClientRect(), f=Math.max(0,Math.min(1,(cx-r.left)/r.width)), t=start+f*span;
+      phT=t; placePH(t);
+      const vis=items.filter(it=>{ const c=cardOf(it.p.id); return !c||!c.hidden; });
+      let hit=vis.filter(it=>t>=it.a && t<=it.b).sort((a,b)=>(a.b-a.a)-(b.b-b.a))[0];
+      if(!hit){ let best=null,bd=20*DAY; vis.forEach(it=>{ const dd=Math.abs((it.a+it.b)/2-t); if(dd<bd){bd=dd;best=it;} }); hit=best; }
+      if(hit){ hl(hit.p.id); hoverThumb.touch(true); hoverThumb.show(ALL[hit.p.id], cx, cy, true); }
+      else { hl(null); hoverThumb.hide(); }
+    }
+    scrubZone.forEach(z=>{
+      z.addEventListener("touchstart",e=>{ if(e.touches.length!==1) return; scrubbing=true; scrubTo(e.touches[0].clientX,e.touches[0].clientY); },{passive:true});
+      z.addEventListener("touchmove",e=>{ if(!scrubbing||e.touches.length!==1) return; e.preventDefault(); scrubTo(e.touches[0].clientX,e.touches[0].clientY); },{passive:false});
+      z.addEventListener("touchend",()=>{ if(!scrubbing) return; scrubbing=false; hoverThumb.hide(); hoverThumb.touch(false); });
+    });
     // two-finger pinch on phones and tablets
     let pinch=null;
     const dist=t=>Math.hypot(t[0].clientX-t[1].clientX, t[0].clientY-t[1].clientY);
@@ -851,7 +870,7 @@ html{overflow-x:clip}
     img.addEventListener("error", ()=>{ img.hidden=true; });
     let cur=null;
     return {
-      show(p,cx,cy){
+      show(p,cx,cy,above){
         if(cur!==p.id){
           cur=p.id;
           el.style.setProperty("--c", CK(p.cat));
@@ -862,11 +881,13 @@ html{overflow-x:clip}
         el.classList.add("on");
         const W=el.offsetWidth, H=el.offsetHeight, pad=18;
         let left=cx+pad, top=cy+pad;
+        if(above){ left=Math.min(innerWidth-W-8, cx-W/2); top=cy-H-36; }
         if(left+W>innerWidth-8) left=cx-W-pad;
         if(top+H>innerHeight-8) top=cy-H-pad;
         el.style.transform=`translate(${Math.max(8,left)}px,${Math.max(8,top)}px)`;
       },
-      hide(){ el.classList.remove("on"); }
+      hide(){ el.classList.remove("on"); },
+      touch(on){ el.classList.toggle("touch",on); }
     };
   })();
 
