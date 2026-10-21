@@ -338,19 +338,19 @@ html.menu-open{overflow:hidden}
 }
 /* timelines run edge to edge; the track names stay lined up with the page content */
 html{overflow-x:clip}
-.tl{--edge:max(var(--gut),calc((100vw - 1320px)/2 + 24px));margin-inline:calc(50% - 50vw);border-left:0;border-right:0;grid-template-columns:calc(var(--edge) + 150px) minmax(0,1fr)}
+.tl{--edge:var(--gut);margin-inline:calc(50% - 50vw);border-left:0;border-right:0;grid-template-columns:190px minmax(0,1fr)}
 .tl .heads{padding-left:0}
 .tl .head,.tl .grp{padding-left:var(--edge)}
 .tl .ruler,.tl .bands{touch-action:none}
 /* the name column reads as its own strip, divided from the tracks */
 .tl .heads{background:#121212;border-right:1px solid var(--line)}
 .tl .heads .sp{background:#121212}
-.tl .tl-bar{padding-left:var(--edge);padding-right:max(var(--gut-r),calc((100vw - 1320px)/2 + 24px))}
+.tl .tl-bar{padding-left:var(--edge);padding-right:var(--gut-r)}
 #hTL,#vTL,#rTL{position:relative;padding-bottom:48px}
 #hTL::after,#vTL::after,#rTL::after,.phead::after{content:"";position:absolute;bottom:0;height:1px;background:var(--line);left:calc(50% - 50vw);right:calc(50% - 50vw)}
 .phead{position:relative;border-bottom:0}
 @media (max-width:720px){
-  .tl{grid-template-columns:calc(var(--edge) + 104px) minmax(0,1fr)}
+  .tl{grid-template-columns:124px minmax(0,1fr)}
   .tl .head,.tl .grp{padding-left:var(--edge)}
   #hTL,#vTL,#rTL{padding-bottom:36px}
 }
