@@ -56,7 +56,7 @@ button{font:inherit;color:inherit}
 .nav a:hover,.nav a[aria-current="page"]{color:var(--fg)}
 .nav a[aria-current="page"]{font-weight:500}
 .nav .home{display:block;line-height:0;opacity:.65;transition:opacity .2s}
-.nav .home{flex:none}
+.nav .home{flex:none;display:none}
 .nav .home img{height:24px;width:auto;max-width:none;display:block}
 .nav .home:hover,.nav .home[aria-current="page"]{opacity:1}
 .dd{position:relative;display:flex;align-items:center;gap:0}
@@ -70,7 +70,7 @@ button{font:inherit;color:inherit}
 .menu a:hover{background:var(--surface)}
 .dd:hover .menu,.dd:focus-within .menu,.dd.open .menu{display:block}
 .logo-link{display:block;line-height:0}
-.logo{height:34px;width:auto}
+.logo{height:46px;width:auto}
 .social{display:flex;justify-content:flex-end;align-items:center;gap:18px}
 .social svg{width:21px;height:21px;display:block}
 .social a{color:var(--muted);text-decoration:none}
@@ -279,7 +279,7 @@ dialog::backdrop{background:rgba(0,0,0,.88)}
   .social{display:none}
   .bar-in{height:auto;grid-template-columns:1fr;justify-items:center;padding-block:12px 8px;gap:8px}
   .logo-link{order:-1}
-  .logo{height:30px}
+  .logo{height:36px}
   .nav{gap:22px;flex-wrap:wrap;justify-content:center}
   .menu{left:50%;transform:translateX(-50%);padding-top:12px}
   html{scroll-padding-top:130px}
@@ -307,8 +307,12 @@ dialog::backdrop{background:rgba(0,0,0,.88)}
 .menu-btn[aria-expanded="true"] .bars i:last-child{transform:translateY(-3.5px) rotate(-45deg)}
 .mnav{position:fixed;left:0;right:0;top:calc(56px + env(safe-area-inset-top,0px));max-height:calc(100% - 56px - env(safe-area-inset-top,0px));z-index:8;background:var(--bar);overflow:auto;display:flex;flex-direction:column;gap:6px;padding-block:12px 22px;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px));border-bottom:1px solid var(--line);box-shadow:0 0 0 100vmax rgba(0,0,0,.6)}
 .mnav > a{font-size:28px;font-weight:900;text-transform:uppercase;text-decoration:none;line-height:1.2;color:var(--fg);display:flex;align-items:center;gap:10px}
-.mv svg{width:14px;height:14px;transition:transform .2s}
-.mv[aria-expanded="true"] svg{transform:rotate(180deg)}
+.mvrow{display:flex;align-items:center;gap:4px}
+.mvrow .mv{font-size:28px;font-weight:900;text-transform:uppercase;text-decoration:none;line-height:1.2;color:var(--fg)}
+.mvrow .mv[aria-current="page"]{color:var(--muted)}
+.mvt{background:none;border:0;color:var(--fg);width:40px;height:40px;display:grid;place-items:center;cursor:pointer;padding:0}
+.mvt svg{width:15px;height:15px;transition:transform .2s}
+.mvt[aria-expanded="true"] svg{transform:rotate(180deg)}
 .mnav > a[aria-current="page"]{color:var(--muted)}
 .msub{display:flex;flex-direction:column;margin:0 0 6px}
 .msub a{display:flex;align-items:center;gap:10px;font-size:17px;color:var(--fg-2);text-decoration:none;padding:4px 0}
@@ -320,7 +324,7 @@ html.menu-open{overflow:hidden}
   body[data-view] .bar-in{height:56px;grid-template-columns:1fr auto;justify-items:stretch;padding-block:0;padding-right:0;gap:12px;margin:0}
   .bar-in > .logo-link,.bar-in > .social{display:none}
   .nav > :not(.home){display:none}
-  .nav .home{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);opacity:1}
+  .nav .home{display:block;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);opacity:1}
   .nav .home img{height:32px}
   .menu-btn{display:flex}
   .bar{display:grid;grid-template-columns:1fr auto;align-items:center;padding-right:max(24px,env(safe-area-inset-right,0px))}
@@ -367,7 +371,7 @@ html.menu-open{overflow:hidden}
   <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="mnav" aria-label="Menu openen"><span class="bars" aria-hidden="true"><i></i><i></i></span></button>
 </header>
 <nav class="mnav" id="mnav" hidden aria-label="Menu">
-  <a href="#videografie" data-nav="videografie" class="mv" id="mv" aria-expanded="false" aria-controls="msub">Videografie<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M1 3.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></a>
+  <div class="mvrow"><a href="#videografie" data-nav="videografie" class="mv" id="mv">Videografie</a><button type="button" class="mvt" id="mvt" aria-expanded="false" aria-controls="msub" aria-label="Toon onderdelen van Videografie"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M1 3.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button></div>
   <div class="msub" id="msub" hidden>
     <a href="#aftermovies"><i class="sw" style="--c:var(--c-event)"></i>Aftermovies</a>
     <a href="#trouwfilms"><i class="sw" style="--c:var(--c-trouw)"></i>Trouwfilms</a>
@@ -878,10 +882,14 @@ html.menu-open{overflow:hidden}
   function setMenu(open){
     mnav.hidden=!open; menuBtn.setAttribute("aria-expanded",open); menuBtn.setAttribute("aria-label",open?"Menu sluiten":"Menu openen");
     document.documentElement.classList.toggle("menu-open",open);
-    if(!open){ $("msub").hidden=true; $("mv").setAttribute("aria-expanded","false"); }
+    if(!open) setSub(false);
   }
-  // first tap on Videografie opens its sub-items, a second tap goes to all videography
-  $("mv").addEventListener("click",e=>{ if($("msub").hidden){ e.preventDefault(); $("msub").hidden=false; $("mv").setAttribute("aria-expanded","true"); } });
+  function setSub(o){ $("msub").hidden=!o; $("mvt").setAttribute("aria-expanded",o); }
+  // first tap on Videografie opens its sub-items, a second tap goes to all videography; the arrow opens and closes
+  $("mv").addEventListener("click",e=>{ if($("msub").hidden){ e.preventDefault(); setSub(true); } });
+  $("mvt").addEventListener("click",()=>setSub($("msub").hidden));
+  // any page link closes the menu, also when it points to the page you're already on
+  mnav.addEventListener("click",e=>{ const a=e.target.closest('a[href^="#"]'); if(a && !e.defaultPrevented) setMenu(false); });
   document.addEventListener("click",e=>{ if(!mnav.hidden && !e.target.closest("#mnav,#menuBtn")) setMenu(false); });
   menuBtn.addEventListener("click",()=>setMenu(mnav.hidden));
   document.addEventListener("keydown",e=>{ if(e.key==="Escape") setMenu(false); });
