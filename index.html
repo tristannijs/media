@@ -336,6 +336,19 @@ html.menu-open{overflow:hidden}
   .tl-bar{padding:0 6px}
   .tl-bar .zoom{margin-left:auto}
 }
+/* timelines run edge to edge; the track names stay lined up with the page content */
+html{overflow-x:clip}
+.tl{--edge:max(var(--gut),calc((100vw - 1320px)/2 + 24px));margin-inline:calc(50% - 50vw);border-left:0;border-right:0;grid-template-columns:calc(var(--edge) + 150px) minmax(0,1fr)}
+.tl .heads{padding-left:calc(var(--edge) - 14px)}
+.tl .tl-bar{padding-left:var(--edge);padding-right:max(var(--gut-r),calc((100vw - 1320px)/2 + 24px))}
+#hTL,#vTL,#rTL{position:relative;padding-bottom:48px}
+#hTL::after,#vTL::after,#rTL::after,.phead::after{content:"";position:absolute;bottom:0;height:1px;background:var(--line);left:calc(50% - 50vw);right:calc(50% - 50vw)}
+.phead{position:relative;border-bottom:0}
+@media (max-width:720px){
+  .tl{grid-template-columns:calc(var(--edge) + 104px) minmax(0,1fr)}
+  .tl .heads{padding-left:calc(var(--edge) - 10px)}
+  #hTL,#vTL,#rTL{padding-bottom:36px}
+}
 @media (prefers-reduced-motion:reduce){.door img{transition:none}.door:hover img{transform:none}}
 </style>
 </head>
