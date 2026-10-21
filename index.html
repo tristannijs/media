@@ -81,7 +81,7 @@ button{font:inherit;color:inherit}
 .view[hidden]{display:none}
 .phead{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px 48px;align-items:end;padding-bottom:28px;border-bottom:1px solid var(--line)}
 .phead h1{font-size:clamp(40px,6.4vw,84px);font-weight:900;text-transform:uppercase;line-height:.92;letter-spacing:-.005em;margin:0;text-wrap:balance}
-.brandmark{line-height:0;width:min(440px,100%);margin:0 auto}
+.brandmark{line-height:0;width:min(300px,80%);margin:0 auto}
 .brandmark img{width:100%;height:auto;display:block}
 .phead.center{display:flex;flex-direction:column;align-items:center;text-align:center;gap:22px;padding-block:12px 36px}
 .phead.center p{max-width:52ch}
@@ -342,6 +342,9 @@ html{overflow-x:clip}
 .tl .heads{padding-left:0}
 .tl .head,.tl .grp{padding-left:var(--edge)}
 .tl .ruler,.tl .bands{touch-action:none}
+/* the name column reads as its own strip, divided from the tracks */
+.tl .heads{background:#121212;border-right:1px solid var(--line)}
+.tl .heads .sp{background:#121212}
 .tl .tl-bar{padding-left:var(--edge);padding-right:max(var(--gut-r),calc((100vw - 1320px)/2 + 24px))}
 #hTL,#vTL,#rTL{position:relative;padding-bottom:48px}
 #hTL::after,#vTL::after,#rTL::after,.phead::after{content:"";position:absolute;bottom:0;height:1px;background:var(--line);left:calc(50% - 50vw);right:calc(50% - 50vw)}
@@ -356,7 +359,8 @@ html{overflow-x:clip}
 .page{gap:var(--rhythm)}
 .phead{padding-bottom:0}
 .phead::after{bottom:calc(var(--rhythm) / -2)}
-.phead.center{padding-block:12px 0}
+.phead.center{padding-block:0}
+body[data-view="start"] .page{padding-top:40px}
 #hTL,#vTL,#rTL{padding-bottom:0}
 #hTL::after,#vTL::after,#rTL::after{bottom:calc(var(--rhythm) / -2)}
 .section{gap:16px}
@@ -433,7 +437,6 @@ html{overflow-x:clip}
   <section class="view page" data-view="start">
     <div class="phead center">
       <h1 class="brandmark"><img src="logo.png" alt="Tristan Nijs Media" width="900" height="167"></h1>
-      <p>Ik maak aftermovies, trouwfilms en promo's, en studeer montage aan het RITCS in Brussel.</p>
     </div>
     <div class="section">
       <div class="shead"><span class="eyebrow">Alles op een tijdlijn</span></div>
