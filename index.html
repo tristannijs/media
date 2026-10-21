@@ -433,18 +433,14 @@ html{overflow-x:clip}
       <h1 class="brandmark"><img src="logo.png" alt="Tristan Nijs Media" width="900" height="167"></h1>
       <p>Ik maak aftermovies, trouwfilms en promo's, en studeer montage aan het RITCS in Brussel.</p>
     </div>
-    <div class="doors">
-      <a class="door" href="#videografie"><div class="img"><img src="videografie.jpg" alt=""></div><div class="cap"><b>Videografie</b><span class="eyebrow" data-count="vid"></span></div></a>
-      <a class="door" href="#ritcs"><div class="img"><img src="ritcs.jpg" alt=""></div><div class="cap"><b>RITCS</b><span class="eyebrow" data-count="rit"></span></div></a>
-      <a class="door" href="#over"><div class="img"><img src="over.jpg" alt=""></div><div class="cap"><b>Over</b><span class="eyebrow">Wie ik ben</span></div></a>
-    </div>
     <div class="section">
       <div class="shead"><span class="eyebrow">Alles op een tijdlijn</span></div>
       <div id="hTL"></div>
     </div>
-    <div class="section">
-      <div class="shead"><span class="eyebrow">Recent werk</span><a href="#videografie">Alle videografie →</a></div>
-      <div class="grid" id="hGrid"></div>
+    <div class="doors">
+      <a class="door" href="#videografie"><div class="img"><img src="videografie.jpg" alt=""></div><div class="cap"><b>Videografie</b><span class="eyebrow" data-count="vid"></span></div></a>
+      <a class="door" href="#ritcs"><div class="img"><img src="ritcs.jpg" alt=""></div><div class="cap"><b>RITCS</b><span class="eyebrow" data-count="rit"></span></div></a>
+      <a class="door" href="#over"><div class="img"><img src="over.jpg" alt=""></div><div class="cap"><b>Over</b><span class="eyebrow">Wie ik ben</span></div></a>
     </div>
   </section>
 
@@ -663,8 +659,8 @@ html{overflow-x:clip}
     grid.addEventListener("click", e=>{ const c=e.target.closest(".card"); if(c) openPlayer(ALL[c.dataset.id]); });
   }
 
-  const hGrid=$("hGrid"), vGrid=$("vGrid"), rGrid=$("rGrid");
-  [...VID,...RIT].sort((a,b)=>D(b.t1||b.t0)-D(a.t1||a.t0)).slice(0,3).forEach(p=>hGrid.appendChild(card(p)));
+  // the start timeline has no grid of its own anymore; it links to an empty stand-in
+  const hGrid=document.createElement("div"), vGrid=$("vGrid"), rGrid=$("rGrid");
   VID.forEach(p=>vGrid.appendChild(card(p)));
   let lastYear=null;
   RIT.forEach(p=>{
@@ -676,7 +672,7 @@ html{overflow-x:clip}
     }
     rGrid.appendChild(card(p));
   });
-  [hGrid,vGrid,rGrid].forEach(wireGrid);
+  [vGrid,rGrid].forEach(wireGrid);
 
   // ----- timeline -----
   const MN = ["jan","feb","mrt","apr","mei","jun","jul","aug","sep","okt","nov","dec"];
@@ -899,6 +895,8 @@ html{overflow-x:clip}
     onTrack:cat=>{ const cur=chips.querySelector('[aria-pressed="true"]'); location.hash=(cur&&cur.dataset.f===cat)?"videografie":HASH_OF[cat]; }
   });
   function vFilter(id){
+    // keep the grid at least as tall as before, so the page doesn't jump up when fewer cards show
+    vGrid.style.minHeight = Math.max(parseFloat(vGrid.style.minHeight)||0, vGrid.offsetHeight)+"px";
     chips.querySelectorAll(".chip").forEach(c=>c.setAttribute("aria-pressed", c.dataset.f===id));
     vGrid.querySelectorAll(".card").forEach(c=>c.hidden = id!=="all" && c.dataset.cat!==id);
     vTL.dim(id);
@@ -934,8 +932,11 @@ html{overflow-x:clip}
   document.addEventListener("click",e=>{ if(!mnav.hidden && !e.target.closest("#mnav,#menuBtn")) setMenu(false); });
   menuBtn.addEventListener("click",()=>setMenu(mnav.hidden));
   document.addEventListener("keydown",e=>{ if(e.key==="Escape") setMenu(false); });
+  let prevView=null;
   function route(){
     const r=ROUTES[(location.hash||"#start").slice(1)]||ROUTES.start;
+    const samePage = r[0]===prevView; prevView=r[0];
+    if(!samePage) vGrid.style.minHeight="";
     document.querySelectorAll(".view").forEach(v=>v.hidden=v.dataset.view!==r[0]);
     document.body.dataset.view=r[0];
     const navKey=NAV_OF[r[0]]||r[0];
@@ -944,7 +945,8 @@ html{overflow-x:clip}
     tenAnker(r[0]==="ten-anker");
     closeDD(); setMenu(false);
     if(document.activeElement && document.activeElement.closest(".menu")) document.activeElement.blur();
-    window.scrollTo(0,0);
+    // switching between videography filters stays where you are; going to another page starts at the top
+    if(!samePage) window.scrollTo(0,0);
   }
   addEventListener("hashchange", route); route();
   $("caret").addEventListener("click", e=>{ e.stopPropagation(); const open=!$("dd").classList.contains("open"); $("dd").classList.toggle("open",open); $("caret").setAttribute("aria-expanded",open); });
