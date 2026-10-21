@@ -584,12 +584,12 @@ dialog::backdrop{background:rgba(0,0,0,.88)}
         const laneEnd=[];
         its.forEach(it=>{ let l=laneEnd.findIndex(e=>e<=it.a); if(l<0){ l=laneEnd.length; laneEnd.push(0);} laneEnd[l]=it.b; it.lane=l; });
         const lanes=Math.max(1,laneEnd.length);
-        if(lanes>1){ const hgt=(8+lanes*LANE)+"px"; row.style.height=hgt; h.style.height=hgt; }
+        if(lanes>1){ const hgt=(10+lanes*LANE)+"px"; row.style.height=hgt; h.style.height=hgt; }
         its.forEach(it=>{
           items.push(it); const p=it.p;
           const c=document.createElement("button"); c.type="button"; c.className="clip"; c.dataset.id=p.id; c.style.setProperty("--c", CK(p.cat));
           c.style.left=x(it.a); c.style.width=w(it.b-it.a); c.textContent=p.title; c.setAttribute("aria-label",`${p.title}, ${p.date}`);
-          if(lanes>1){ c.style.top=(4+it.lane*LANE)+"px"; c.style.bottom="auto"; c.style.height=(LANE-4)+"px"; }
+          if(lanes>1){ c.style.top=(7+it.lane*LANE)+"px"; c.style.bottom="auto"; c.style.height=(LANE-4)+"px"; }
           row.appendChild(c);
         });
         trks.appendChild(row);
@@ -618,7 +618,7 @@ dialog::backdrop{background:rgba(0,0,0,.88)}
       // only consider the track row under the pointer, so stacked groups don't compete
       const row=e.target.closest(".trk");
       let lane=null;
-      if(row && row.style.height){ lane=Math.max(0,Math.floor((e.clientY-row.getBoundingClientRect().top-4)/LANE)); }
+      if(row && row.style.height){ lane=Math.max(0,Math.floor((e.clientY-row.getBoundingClientRect().top-7)/LANE)); }
       const vis=items.filter(it=>{ const c=cardOf(it.p.id); return (!c||!c.hidden) && (!row || row.dataset.cat===it.p.cat) && (lane==null || it.lane===lane); });
       let hit=vis.filter(it=>t>=it.a && t<=it.b).sort((a,b)=>(a.b-a.a)-(b.b-b.a))[0];
       if(!hit){ let best=null,bd=25*DAY; vis.forEach(it=>{ const dd=Math.abs((it.a+it.b)/2-t); if(dd<bd){bd=dd;best=it;} }); hit=best; }
