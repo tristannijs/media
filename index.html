@@ -76,8 +76,8 @@ button{font:inherit;color:inherit}
 .view[hidden]{display:none}
 .phead{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px 48px;align-items:end;padding-bottom:28px;border-bottom:1px solid var(--line)}
 .phead h1{font-size:clamp(40px,6.4vw,84px);font-weight:900;text-transform:uppercase;line-height:.92;letter-spacing:-.005em;margin:0;text-wrap:balance}
-.brandmark{line-height:0}
-.brandmark img{width:min(440px,100%);height:auto;display:block}
+.brandmark{line-height:0;width:min(440px,100%);margin:0 auto}
+.brandmark img{width:100%;height:auto;display:block}
 .phead.center{display:flex;flex-direction:column;align-items:center;text-align:center;gap:22px;padding-block:12px 36px}
 .phead.center p{max-width:52ch}
 body[data-view="start"] .logo-link{visibility:hidden}
@@ -112,18 +112,18 @@ body[data-view="start"] .logo-link{visibility:hidden}
 .chip[aria-pressed="true"] em{color:#555}
 
 /* timeline */
-.tl{display:grid;grid-template-columns:150px minmax(0,1fr);background:var(--surface);border:1px solid var(--line)}
+.tl{display:grid;grid-template-columns:172px minmax(0,1fr);background:var(--surface);border:1px solid var(--line)}
 .heads{border-right:1px solid var(--line)}
 .heads .sp{height:30px;border-bottom:1px solid var(--line)}
 .heads .sp.band{height:24px}
 .grp{height:26px;display:flex;align-items:center;padding:0 14px;border-bottom:1px solid var(--line);background:var(--surface-2)}
 .grp-row{height:26px;border-bottom:1px solid var(--line);background:var(--surface-2)}
-.head{height:40px;width:100%;display:flex;align-items:center;gap:10px;padding:0 14px;background:none;border:0;border-bottom:1px solid var(--line);font-size:13px;cursor:pointer;text-align:left;color:var(--fg-2)}
+.head{height:40px;width:100%;display:flex;align-items:flex-start;gap:10px;padding:10px 14px 0;line-height:20px;background:none;border:0;border-bottom:1px solid var(--line);font-size:13px;cursor:pointer;text-align:left;color:var(--fg-2)}
 .head:hover{color:var(--fg)}
 .head.static{cursor:default}
 .head.static:hover{color:var(--fg-2)}
 .head.dim{opacity:.35}
-.sw{width:10px;height:10px;background:var(--c,var(--clip));flex:none}
+.sw{width:10px;height:10px;background:var(--c,var(--clip));flex:none;align-self:center}
 .tl-scroll{overflow-x:auto;overflow-y:hidden;min-width:0;scrollbar-color:var(--line) transparent}
 .tl-in{position:relative;min-width:760px;cursor:grab;user-select:none}
 .tl-in .clip{cursor:pointer}
@@ -158,7 +158,8 @@ body[data-view="start"] .logo-link{visibility:hidden}
 .readout span{color:var(--muted)}
 .trk{position:relative;height:40px;border-bottom:1px solid var(--line);transition:opacity .2s;background:#151515}
 .trk:nth-child(even){background:#181818}
-.head .code{font-size:11px;font-weight:500;color:var(--muted);width:20px}
+.head .code{font-size:11px;font-weight:500;color:var(--muted);width:20px;flex:none}
+.head .sw{align-self:auto;margin-top:5px}
 .tc{flex:none;font-size:13px;font-weight:500;color:var(--accent);background:#0b0b0b;border:1px solid var(--line);padding:3px 9px;letter-spacing:.04em}
 .tl-bar .readout{flex:1}
 .trks > :last-child{border-bottom:0}
@@ -581,7 +582,7 @@ dialog::backdrop{background:rgba(0,0,0,.88)}
         // projects that overlap in time get their own lane inside the track
         const its=g.items.filter(p=>p.cat===tr.cat).map(p=>{ const t0=D(p.t0); return {p,a:t0,b:Math.max(p.t1?D(p.t1):t0, t0+o.minDays*DAY)}; }).sort((a,b)=>a.a-b.a);
         const laneEnd=[];
-        its.forEach(it=>{ let l=laneEnd.findIndex(e=>e<it.a); if(l<0){ l=laneEnd.length; laneEnd.push(0);} laneEnd[l]=it.b; it.lane=l; });
+        its.forEach(it=>{ let l=laneEnd.findIndex(e=>e<=it.a); if(l<0){ l=laneEnd.length; laneEnd.push(0);} laneEnd[l]=it.b; it.lane=l; });
         const lanes=Math.max(1,laneEnd.length);
         if(lanes>1){ const hgt=(8+lanes*LANE)+"px"; row.style.height=hgt; h.style.height=hgt; }
         its.forEach(it=>{
