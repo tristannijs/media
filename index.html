@@ -272,9 +272,12 @@ dialog::backdrop{background:rgba(0,0,0,.88)}
   .phead,.contact{grid-template-columns:minmax(0,1fr)}
   .phead p{max-width:60ch}
 }
+@media (max-width:1000px){ body[data-view="start"] .logo-link{display:none} body[data-view="start"] .bar-in{padding-block:14px} }
 @media (max-width:720px){
   .logo{height:34px}
-  .nav{gap:18px;font-size:15px}
+  .nav{gap:16px;font-size:14px;flex-wrap:nowrap}
+  .nav .home img{height:22px}
+  .caret{padding:2px}
   .page{padding-block:36px 16px;gap:40px}
   .grid{grid-template-columns:minmax(0,1fr);gap:30px}
   .doors{grid-template-columns:minmax(0,1fr)}
