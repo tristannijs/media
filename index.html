@@ -201,6 +201,24 @@ body[data-view="start"] .logo-link{visibility:hidden}
 .over p{margin:0;font-size:17px;font-weight:300;color:var(--fg-2);max-width:62ch}
 .over .lead{font-size:21px;font-weight:400;color:var(--fg);line-height:1.5}
 
+/* project page */
+.back{color:var(--fg-2);text-decoration:none;font-size:14px;margin-bottom:-36px}
+.back:hover{color:var(--fg)}
+.film{position:relative;aspect-ratio:16/9;max-width:100%;background:#000}
+.film iframe,.film video{position:absolute;inset:0;width:100%;height:100%;border:0;display:block;background:#000}
+.film.small{max-width:720px}
+.article{display:flex;flex-direction:column;gap:16px;max-width:68ch}
+.article h2{font-size:24px;font-weight:700;margin:20px 0 0}
+.article p{margin:0;font-size:17px;font-weight:300;color:var(--fg-2)}
+.article .lead{font-size:21px;font-weight:400;color:var(--fg);line-height:1.5}
+.article blockquote{margin:0;padding:4px 0 4px 20px;border-left:3px solid var(--c-ritcs);display:flex;flex-direction:column;gap:12px}
+.article blockquote p{font-style:italic;color:var(--fg)}
+.frames{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.frames figure{margin:0;display:flex;flex-direction:column;gap:10px}
+.frames img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;background:var(--surface)}
+.frames figcaption{display:flex;flex-direction:column;gap:2px;font-size:15px}
+@media (max-width:720px){ .frames{grid-template-columns:minmax(0,1fr)} .back{margin-bottom:-24px} }
+
 /* contact */
 .contact{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:32px 48px}
 .contact .block{display:flex;flex-direction:column;gap:10px}
@@ -233,7 +251,11 @@ dialog::backdrop{background:rgba(0,0,0,.88)}
 .pl-body p{margin:0;color:var(--muted);font-size:14px}
 .pl-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .pl-parts{display:flex;gap:6px}
-.pl-parts button[aria-pressed="true"]{background:var(--fg);color:#000;border-color:var(--fg)}
+.pl-screen video{position:absolute;inset:0;width:100%;height:100%;background:#000;display:block}
+.pthumb{width:76px;aspect-ratio:16/9;padding:0;border:1px solid var(--line);background:#000;cursor:pointer;overflow:hidden;opacity:.6;transition:opacity .2s}
+.pthumb img{width:100%;height:100%;object-fit:cover;display:block}
+.pthumb:hover{opacity:1}
+.pthumb[aria-pressed="true"]{opacity:1;outline:2px solid var(--accent);outline-offset:1px}
 
 @media (max-width:1000px){
   .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -265,7 +287,7 @@ dialog::backdrop{background:rgba(0,0,0,.88)}
 <header class="bar">
   <div class="bar-in">
     <nav class="nav" aria-label="Hoofdmenu">
-      <a href="#start" data-nav="start" class="home" aria-label="Start"><img src="icon.png" alt="" width="145" height="83"></a>
+      <a href="#start" data-nav="start" class="home" aria-label="Start"><img src="icon.png" alt="" width="200" height="113"></a>
       <div class="dd" id="dd">
         <a href="#videografie" data-nav="videografie">Videografie</a>
         <button class="caret" id="caret" type="button" aria-expanded="false" aria-controls="ddmenu" aria-label="Toon onderdelen van Videografie"><svg viewBox="0 0 12 12"><path d="M1 3.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button>
@@ -279,7 +301,7 @@ dialog::backdrop{background:rgba(0,0,0,.88)}
       <a href="#over" data-nav="over">Over</a>
       <a href="#contact" data-nav="contact">Contact</a>
     </nav>
-    <a class="logo-link" href="#start"><img class="logo" src="logo.png" alt="Tristan Nijs Media" width="211" height="46"></a>
+    <a class="logo-link" href="#start"><img class="logo" src="logo.png" alt="Tristan Nijs Media" width="248" height="46"></a>
     <div class="social">
       <a href="https://www.instagram.com/tristannijs.media/" target="_blank" rel="noopener">Instagram</a>
       <a href="https://www.youtube.com/channel/UCIFwhLl5PZqAf0yubE9JlMA" target="_blank" rel="noopener">YouTube</a>
@@ -290,7 +312,7 @@ dialog::backdrop{background:rgba(0,0,0,.88)}
 <main>
   <section class="view page" data-view="start">
     <div class="phead center">
-      <h1 class="brandmark"><img src="logo.png" alt="Tristan Nijs Media" width="440" height="96"></h1>
+      <h1 class="brandmark"><img src="logo.png" alt="Tristan Nijs Media" width="900" height="167"></h1>
       <p>Ik maak aftermovies, trouwfilms en promo's, en studeer montage aan het RITCS in Brussel.</p>
     </div>
     <div class="doors">
@@ -327,6 +349,47 @@ dialog::backdrop{background:rgba(0,0,0,.88)}
     </div>
     <div id="rTL"></div>
     <div class="grid" id="rGrid"></div>
+  </section>
+
+  <section class="view page" data-view="ten-anker" hidden>
+    <a class="back" href="#ritcs">← RITCS</a>
+    <div class="phead">
+      <h1>Ten Anker</h1>
+      <p>Individueel Artistiek Onderzoek 1 · 2024 – 2025. Script, regie, camera, montage en soundtrack op viool.</p>
+    </div>
+    <div class="film" id="taFilm"></div>
+    <div class="article">
+      <p class="lead">Theo (16), een onzekere laatbloeier, wordt op een avond uitgesloten door zijn vrienden. Op zoek naar een verklaring belt hij met "een vriend" en wordt hij gedwongen om de verklaring in zijn eigen gedrag te zoeken.</p>
+
+      <h2>Opdracht</h2>
+      <p>Voor het vak IAO Montage moest ik een audiovisueel werk van drie minuten maken waarin ik mijn eigen stem als maker verken. Het begon met een thema dat me raakte tijdens een film die we samen bekeken, en van daaruit werkte ik een persoonlijk idee uit. Dat kon een documentaire, portret, fictiescène of experimentele film worden.</p>
+      <p>De opdracht draaide rond zelfonderzoek en creatieve vrijheid: durven experimenteren, fouten maken, en iets creëren dat echt bij mij hoort. Tijdens het proces gaf ik mijn idee vorm, stelde het voor aan de groep, en verfijnde het verder op basis van feedback.</p>
+      <p>Ons startpunt was de film: In the Mood for Love van Wong Kar-Wai. We werden gevraagd om onze film te linken aan een onderwerp, emotie en herhaling die we kunnen representeren met een frame uit de film. We hingen niet echt vast aan deze link, maar ik heb toch vastgehouden aan volgende frames.</p>
+    </div>
+    <div class="frames">
+      <figure><img src="assets/tenanker/tijd.jpg" alt="Frame uit In the Mood for Love: Tijd"><figcaption><span class="eyebrow">Onderwerp</span>Tijd, achterstand in tijd</figcaption></figure>
+      <figure><img src="assets/tenanker/eenzaamheid.jpg" alt="Frame uit In the Mood for Love: Eenzaamheid"><figcaption><span class="eyebrow">Emotie</span>Eenzaamheid, zelfveroorzaakte eenzaamheid</figcaption></figure>
+      <figure><img src="assets/tenanker/yumeji.jpg" alt="Frame uit In the Mood for Love: Yumeji's Theme"><figcaption><span class="eyebrow">Herhaling</span>Shigeru Umebayashi: Yumeji's Theme</figcaption></figure>
+    </div>
+    <div class="article">
+      <h2>Proces</h2>
+      <p>Ik koos ervoor om een kortfilm te maken waarin ik dieper ging op een struggle die ik een aantal jaren onderging: laatbloeier zijn. Ik schreef het script, regisseerde, hanteerde de camera en monteerde vervolgens alles. Als kers op de taart maakte ik met mijn viool de soundtrack geïnspireerd op Yumeji's Theme van Shigeru Umebayashi.</p>
+      <p>Fysiek groeide ik trager dan de mensen rond mij; ik bleef klein, had een hoge stem, etc. Dit alles terwijl ik mijn kring wel zag opgroeien. Dit maakte plaats voor onzekerheid om te groeien. Ik voelde me achter in de tijd. Die onzekerheid zorgde ervoor dat ik op sociaal vlak passief werd en mezelf steeds naar de achtergrond bracht. Hoe onzichtbaarder ik werd, hoe onzekerder ik werd; ik kwam terecht in een neerwaartse spiraal. Ik besefte uiteindelijk dat ik zelf een obstakel was voor het sociaal opgroeien; niet het feit dat ik "niet" fysiek opgroeide.</p>
+      <p>Voor het verhaal ging ik mezelf bestuderen als personage en onderzocht onder andere het complex innerlijk conflict tussen fysiek en sociaal opgroeien en hoe ze een obstakel vormen voor elkaar. Een complexe situatie zoals deze wou ik ook nuanceren en wou ik begrip tonen voor zowel mezelf als mijn vrienden.</p>
+      <p>Uiteindelijk kwam ik op het idee om Theo te laten bellen met de oudere versie van zichzelf. Dit wordt subtiel duidelijk gemaakt aan de hand van kledij, positie in het frame, etc. maar meer expliciet in de reflectie van Theo op het einde. Sommigen snapten deze insteek volledig, andere hadden verschillende interessante interpretaties, en nog anderen snapten het niet of pas na enkele keren kijken.</p>
+      <p>Oorspronkelijk was ik een beetje teleurgesteld door deze verscheidenheid aan reacties en interpretaties, maar het toont juist dat het een werk is dat stemt tot nadenken. Ik ben er het mooie van beginnen inzien.</p>
+      <p>Ik heb mij volledig gesmeten om deze film te maken en ben enorm dankbaar voor mijn acteurs die het mogelijk hebben gemaakt. Het resultaat is een kortfilm met lovende feedback van de docenten met een 16/20.</p>
+      <p>Tot slot is het een universele situatie; het kan iedereen overkomen; maar wel een situatie die slechts de minderheid meemaakt. De weinige representatie in film motiveerde me ook om dit te maken. De taboe over dit soort gevoelens, zeker bij jongens, wou ik ook graag doorbreken.</p>
+
+      <h2>Feedback</h2>
+      <blockquote>
+        <p>De film is van een hoog niveau. Het is een zeer verzorgde film waar er aandacht is voor elke parameter. De acteurs zijn goed gecast. Het open einde is verrassend. De zelfgespeelde klankband geïnspireerd op Shigeru Umebayashi: Yumeji's theme (In the Mood for Love) wordt geapprecieerd. De presentatie was helder, interessant en volledig.</p>
+        <p>Tristan, je hebt een passie voor het filmmedium en dat is voelbaar in je onderzoek. Je stelt je kwetsbaar op wat je onderzoeksproces ten goede komt. Je hebt getoond dat je kritisch bent voor jezelf en openstaat voor feedback.</p>
+      </blockquote>
+
+      <h2>Bloopers</h2>
+    </div>
+    <div class="film small" id="taFragment"></div>
   </section>
 
   <section class="view page" data-view="over" hidden>
@@ -399,7 +462,8 @@ dialog::backdrop{background:rgba(0,0,0,.88)}
     {cat:"event", title:"Dokfeesten 2026", sub:"Aftermovie", date:"29 augustus 2026", t0:"2026-08-29", yt:["JdYwGTit_-c"]},
     {cat:"event", title:"Wejo × Bocco", sub:"Pop-up opening", date:"22 juli 2026", t0:"2026-07-22", yt:["4to_bSMjv98"]},
     {cat:"trouw", title:"Joachim & Felien", sub:"Trouwfilm", date:"2 mei 2026", t0:"2026-05-02", yt:["JYeob-Q2qRs"]},
-    {cat:"promo", title:"Raw Collection", sub:"WEJO Jewelry", date:"April 2026", t0:"2026-04-08", page:"https://tristannijs.media/promotievideos"},
+    {cat:"promo", title:"Raw Collection", sub:"WEJO Jewelry", date:"April 2026", t0:"2026-04-08",
+      vids:["TzAXosEGRPz","HB4CC_BQhiI","6S5RmmwFN_o","ILPkMp435iz"].map(id=>({src:`assets/wejo/${id}.mp4`, poster:`assets/wejo/${id}.jpg`}))},
     {cat:"promo", title:"Spring Drop Announcement", sub:"Docho Vintage", date:"21 maart 2026", t0:"2026-03-21", yt:["5VXlWdZdW1A"]},
     {cat:"event", title:"Fairtrade Banana Run", sub:"Aftermovie", date:"8 maart 2026", t0:"2026-03-08", yt:["hqw-YgsIId4"]},
     {cat:"trouw", title:"Elien & Jens", sub:"Trouwfilm", date:"20 september 2025", t0:"2025-09-20", yt:["hvcm7aHr_Dc"]},
@@ -407,11 +471,13 @@ dialog::backdrop{background:rgba(0,0,0,.88)}
     {cat:"event", title:"Mens Sana 2025", sub:"Aftermovie", date:"3 mei 2025", t0:"2025-05-03", yt:["cd96lB5AD2k"]}
   ];
   const RIT = [
-    {cat:"docu",   year:"2025 – 2026", title:"Atelier Documentaire 2", sub:"Montage", date:"Maart – april 2026", t0:"2026-03-01", t1:"2026-04-30", yt:["TKK0UC2sbbE","rhwQRYKQXOY"]},
-    {cat:"docu",   year:"2025 – 2026", title:"Fillippenzen 3:13", sub:"Workshop Docu Aalst · montage", date:"Oktober – november 2025", t0:"2025-10-01", t1:"2025-11-30", yt:["WrqVQPR2veo"]},
-    {cat:"iao",    year:"2024 – 2025", title:"Ten Anker", sub:"IAO 1 · script, regie, ciné, montage", date:"2024 – 2025", t0:"2024-09-16", t1:"2025-06-30", yt:["nZM5mqWff8g"], page:"https://tristannijs.media/iao-1"},
-    {cat:"docu",   year:"2024 – 2025", title:"Atelier Documentaire 1", sub:"Montage", date:"Mei – juni 2025", t0:"2025-05-01", t1:"2025-06-30", yt:["5RBhmR-tjOM","FM4PBAvugTw"]},
-    {cat:"fictie", year:"2024 – 2025", title:"Atelier Fictie 1", sub:"Montage", date:"Maart – april 2025", t0:"2025-03-01", t1:"2025-04-30", yt:["8EF8p7EGLOc"]},
+    {cat:"docu",   year:"2025 – 2026", title:"Nieuw Gent", sub:"Atelier Documentaire 2 · film van Aurélie Haerens · montage", date:"Maart – april 2026", t0:"2026-03-01", t1:"2026-04-30", yt:["TKK0UC2sbbE"]},
+    {cat:"docu",   year:"2025 – 2026", title:"87 Seconds", sub:"Atelier Documentaire 2 · film van Juho Kankaanpää · montage", date:"Maart – april 2026", t0:"2026-03-01", t1:"2026-04-30", yt:["rhwQRYKQXOY"]},
+    {cat:"docu",   year:"2025 – 2026", title:"Fillippenzen 3:13", sub:"Workshop Docu Aalst · film van Sulamite Mani Djeuda · montage", date:"Oktober – november 2025", t0:"2025-10-01", t1:"2025-11-30", yt:["WrqVQPR2veo"]},
+    {cat:"iao",    year:"2024 – 2025", title:"Ten Anker", sub:"IAO 1 · script, regie, ciné, montage en soundtrack", date:"2024 – 2025", t0:"2024-09-16", t1:"2025-06-30", yt:["nZM5mqWff8g"], page:"#ten-anker"},
+    {cat:"docu",   year:"2024 – 2025", title:"Film van Maxence Rubbens", sub:"Atelier Documentaire 1 · montage", date:"Mei – juni 2025", t0:"2025-05-01", t1:"2025-06-30", yt:["5RBhmR-tjOM"]},
+    {cat:"docu",   year:"2024 – 2025", title:"Film van Nelson Van Herzele", sub:"Atelier Documentaire 1 · montage", date:"Mei – juni 2025", t0:"2025-05-01", t1:"2025-06-30", yt:["FM4PBAvugTw"]},
+    {cat:"fictie", year:"2024 – 2025", title:"Atelier Fictie 1", sub:"Film van Jonathan Leyssens · montage", date:"Maart – april 2025", t0:"2025-03-01", t1:"2025-04-30", yt:["8EF8p7EGLOc"]},
     {cat:"fictie", year:"2024 – 2025", title:"De Koffer", sub:"Atelier Fictie 1 · concept, acteur, montage", date:"December 2024", t0:"2024-12-01", t1:"2024-12-31", yt:["pkkMk5IcIpE"]}
   ];
   const CATNAME = {event:"Aftermovie", trouw:"Trouwfilm", promo:"Promotievideo", fictie:"RITCS · Fictie", docu:"RITCS · Documentaire", iao:"RITCS · IAO"};
@@ -424,14 +490,19 @@ dialog::backdrop{background:rgba(0,0,0,.88)}
 
   const CK = c => "var(--c-"+((c==="fictie"||c==="docu"||c==="iao")?"ritcs":c)+")";
   const thumb = (id,n) => `https://i.ytimg.com/vi/${id}/${n?("hq"+n):"hqdefault"}.jpg`;
+  // cover image, and the frames shown while scrubbing over a card:
+  // YouTube keeps three frames per video; a multi-video project shows each video's poster
+  const cover = p => p.vids ? p.vids[0].poster : (p.yt ? thumb(p.yt[0]) : null);
+  const ytFrame=(id,title,auto)=>`<iframe src="https://www.youtube-nocookie.com/embed/${id}?rel=0${auto?"&autoplay=1":""}" title="${esc(title)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
+  const scrubFrames = p => p.vids ? p.vids.map(v=>v.poster) : (p.yt ? [1,2,3].map(n=>thumb(p.yt[0],n)) : []);
 
   // ----- cards -----
   function card(p){
     const b = document.createElement("button");
     b.type="button"; b.className="card"; b.dataset.id=p.id; b.dataset.cat=p.cat;
     b.style.setProperty("--c", CK(p.cat));
-    const yt = p.yt && p.yt[0];
-    b.innerHTML = `<div class="thumb"><div class="slate"><b>${esc(p.title)}</b></div>${yt?`<img alt="" loading="lazy" src="${thumb(yt)}" data-yt="${yt}">`:""}<span class="scrubline"></span>${p.yt&&p.yt.length>1?`<span class="parts">${p.yt.length} delen</span>`:""}</div>
+    const cv = cover(p);
+    b.innerHTML = `<div class="thumb"><div class="slate"><b>${esc(p.title)}</b></div>${cv?`<img alt="" loading="lazy" src="${cv}" data-scrub="1">`:""}<span class="scrubline"></span>${p.vids&&p.vids.length>1?`<span class="parts">${p.vids.length} video's</span>`:""}</div>
       <div class="meta"><span class="eyebrow">${esc(CATNAME[p.cat])} · ${esc(p.date)}</span><strong>${esc(p.title)}</strong><small>${esc(p.sub)}</small></div>`;
     b.setAttribute("aria-label", `${p.title}, ${p.sub}, ${p.date}`);
     const img = b.querySelector("img"); if(img) img.addEventListener("error", ()=>img.remove());
@@ -443,12 +514,13 @@ dialog::backdrop{background:rgba(0,0,0,.88)}
       const r = c.querySelector(".thumb").getBoundingClientRect();
       const f = Math.min(.999, Math.max(0,(e.clientX-r.left)/r.width));
       const line = c.querySelector(".scrubline"); line.style.left=(f*100)+"%"; line.classList.add("on");
-      const img = c.querySelector("img[data-yt]"); if(!img) return;
-      const n = 1+Math.floor(f*3); if(img.dataset.n!=n){ img.dataset.n=n; img.src=thumb(img.dataset.yt,n); }
+      const img = c.querySelector("img[data-scrub]"); if(!img) return;
+      const fr = scrubFrames(ALL[c.dataset.id]); if(!fr.length) return;
+      const n = Math.floor(f*fr.length); if(img.dataset.n!=n){ img.dataset.n=n; img.src=fr[n]; }
     });
     grid.addEventListener("mouseout", e=>{
       const c = e.target.closest(".card"); if(!c || c.contains(e.relatedTarget)) return;
-      const img = c.querySelector("img[data-yt]"); if(img){ img.dataset.n=""; img.src=thumb(img.dataset.yt); }
+      const img = c.querySelector("img[data-scrub]"); if(img){ img.dataset.n=""; img.src=cover(ALL[c.dataset.id]); }
     });
     grid.addEventListener("click", e=>{ const c=e.target.closest(".card"); if(c) openPlayer(ALL[c.dataset.id]); });
   }
@@ -486,7 +558,7 @@ dialog::backdrop{background:rgba(0,0,0,.88)}
     const placePH=t=>{ ph.style.left=x(t); tcEl.textContent=tcOf(t); };
     const park=()=>placePH(phT);
     if(o.bands){ const bands=host.querySelector(".bands"); o.bands.forEach(b=>{ const s=Math.max(D(b.from),start), e=Math.min(D(b.to),end); const el=document.createElement("div"); el.className="band-l"; el.style.left=x(s); el.style.width=w(e-s); el.textContent=b.label; bands.appendChild(el); }); }
-    const items=[];
+    const items=[], LANE=30;
     const totalTracks=o.groups.reduce((n,g)=>n+g.tracks.length,0); let trackNo=0;
     o.groups.forEach(g=>{
       if(g.label){
@@ -501,11 +573,17 @@ dialog::backdrop{background:rgba(0,0,0,.88)}
         if(o.onTrack) h.addEventListener("click",()=>o.onTrack(tr.cat)); else h.tabIndex=-1;
         heads.appendChild(h);
         const row=document.createElement("div"); row.className="trk"; row.dataset.cat=tr.cat;
-        g.items.filter(p=>p.cat===tr.cat).forEach(p=>{
-          const t0=D(p.t0), t1=Math.max(p.t1?D(p.t1):t0, t0+o.minDays*DAY);
-          const it={p,a:t0,b:t1}; items.push(it);
+        // projects that overlap in time get their own lane inside the track
+        const its=g.items.filter(p=>p.cat===tr.cat).map(p=>{ const t0=D(p.t0); return {p,a:t0,b:Math.max(p.t1?D(p.t1):t0, t0+o.minDays*DAY)}; }).sort((a,b)=>a.a-b.a);
+        const laneEnd=[];
+        its.forEach(it=>{ let l=laneEnd.findIndex(e=>e<it.a); if(l<0){ l=laneEnd.length; laneEnd.push(0);} laneEnd[l]=it.b; it.lane=l; });
+        const lanes=Math.max(1,laneEnd.length);
+        if(lanes>1){ const hgt=(8+lanes*LANE)+"px"; row.style.height=hgt; h.style.height=hgt; }
+        its.forEach(it=>{
+          items.push(it); const p=it.p;
           const c=document.createElement("button"); c.type="button"; c.className="clip"; c.dataset.id=p.id; c.style.setProperty("--c", CK(p.cat));
-          c.style.left=x(t0); c.style.width=w(t1-t0); c.textContent=p.title; c.setAttribute("aria-label",`${p.title}, ${p.date}`);
+          c.style.left=x(it.a); c.style.width=w(it.b-it.a); c.textContent=p.title; c.setAttribute("aria-label",`${p.title}, ${p.date}`);
+          if(lanes>1){ c.style.top=(4+it.lane*LANE)+"px"; c.style.bottom="auto"; c.style.height=(LANE-4)+"px"; }
           row.appendChild(c);
         });
         trks.appendChild(row);
@@ -533,7 +611,9 @@ dialog::backdrop{background:rgba(0,0,0,.88)}
       ph.style.left=(f*100)+"%"; tcEl.textContent=tcOf(t);
       // only consider the track row under the pointer, so stacked groups don't compete
       const row=e.target.closest(".trk");
-      const vis=items.filter(it=>{ const c=cardOf(it.p.id); return (!c||!c.hidden) && (!row || row.dataset.cat===it.p.cat); });
+      let lane=null;
+      if(row && row.style.height){ lane=Math.max(0,Math.floor((e.clientY-row.getBoundingClientRect().top-4)/LANE)); }
+      const vis=items.filter(it=>{ const c=cardOf(it.p.id); return (!c||!c.hidden) && (!row || row.dataset.cat===it.p.cat) && (lane==null || it.lane===lane); });
       let hit=vis.filter(it=>t>=it.a && t<=it.b).sort((a,b)=>(a.b-a.a)-(b.b-b.a))[0];
       if(!hit){ let best=null,bd=25*DAY; vis.forEach(it=>{ const dd=Math.abs((it.a+it.b)/2-t); if(dd<bd){bd=dd;best=it;} }); hit=best; }
       if(hit) hl(hit.p.id); else { hl(null); const dt=new Date(t); readout.innerHTML=`<span>${MN[dt.getUTCMonth()]} ${dt.getUTCFullYear()}</span>`; }
@@ -620,8 +700,8 @@ dialog::backdrop{background:rgba(0,0,0,.88)}
           cur=p.id;
           el.style.setProperty("--c", CK(p.cat));
           b.textContent=p.title; st.textContent=p.title; eb.textContent=CATNAME[p.cat]+" · "+p.date;
-          const yt=p.yt&&p.yt[0];
-          if(yt){ img.hidden=false; img.src=thumb(yt); } else { img.hidden=true; img.removeAttribute("src"); }
+          const cv=cover(p);
+          if(cv){ img.hidden=false; img.src=cv; } else { img.hidden=true; img.removeAttribute("src"); }
         }
         el.classList.add("on");
         const W=el.offsetWidth, H=el.offsetHeight, pad=18;
@@ -670,14 +750,22 @@ dialog::backdrop{background:rgba(0,0,0,.88)}
   });
 
   // ----- router -----
-  const ROUTES={start:["start"],videografie:["videografie","all"],aftermovies:["videografie","event"],trouwfilms:["videografie","trouw"],promotievideos:["videografie","promo"],ritcs:["ritcs"],over:["over"],contact:["contact"]};
+  const ROUTES={start:["start"],videografie:["videografie","all"],aftermovies:["videografie","event"],trouwfilms:["videografie","trouw"],promotievideos:["videografie","promo"],ritcs:["ritcs"],"ten-anker":["ten-anker"],over:["over"],contact:["contact"]};
+  const NAV_OF={"ten-anker":"ritcs"};
+  // the project page only holds its players while it is open, so leaving it stops playback
+  function tenAnker(open){
+    $("taFilm").innerHTML = open ? ytFrame("nZM5mqWff8g","Ten Anker",false) : "";
+    $("taFragment").innerHTML = open ? `<video src="assets/tenanker/fragment.mp4" poster="assets/tenanker/fragment.jpg" controls playsinline preload="none"></video>` : "";
+  }
   const closeDD=()=>{ $("dd").classList.remove("open"); $("caret").setAttribute("aria-expanded","false"); };
   function route(){
     const r=ROUTES[(location.hash||"#start").slice(1)]||ROUTES.start;
     document.querySelectorAll(".view").forEach(v=>v.hidden=v.dataset.view!==r[0]);
     document.body.dataset.view=r[0];
-    document.querySelectorAll("[data-nav]").forEach(a=>{ if(a.dataset.nav===r[0]) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current"); });
+    const navKey=NAV_OF[r[0]]||r[0];
+    document.querySelectorAll("[data-nav]").forEach(a=>{ if(a.dataset.nav===navKey) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current"); });
     if(r[0]==="videografie") vFilter(r[1]);
+    tenAnker(r[0]==="ten-anker");
     closeDD();
     if(document.activeElement && document.activeElement.closest(".menu")) document.activeElement.blur();
     window.scrollTo(0,0);
@@ -690,10 +778,15 @@ dialog::backdrop{background:rgba(0,0,0,.88)}
   // ----- player -----
   const dlg=$("player");
   function show(p,k){
-    const scr=$("plScreen"), yt=p.yt&&p.yt[k];
-    scr.innerHTML=`<div class="slate"><b>${esc(p.title)}</b></div>`+(yt?`<iframe src="https://www.youtube-nocookie.com/embed/${yt}?autoplay=1&rel=0" title="${esc(p.title)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`:"");
-    const link=$("plLink");
-    if(yt){ link.href="https://www.youtube.com/watch?v="+yt; link.textContent="Open op YouTube ↗"; } else { link.href=p.page; link.textContent="Bekijk op mijn site ↗"; }
+    const scr=$("plScreen"), link=$("plLink");
+    if(p.vids){
+      const v=p.vids[k];
+      scr.innerHTML=`<video src="${v.src}" poster="${v.poster}" controls autoplay playsinline></video>`;
+      link.hidden=true;
+    } else {
+      scr.innerHTML=`<div class="slate"><b>${esc(p.title)}</b></div>`+ytFrame(p.yt[0],p.title,true);
+      link.hidden=false; link.href="https://www.youtube.com/watch?v="+p.yt[0];
+    }
     $("plParts").querySelectorAll("button").forEach((b,i)=>b.setAttribute("aria-pressed", i===k));
   }
   function openPlayer(p){
@@ -701,10 +794,12 @@ dialog::backdrop{background:rgba(0,0,0,.88)}
     $("plTitle").textContent=p.title;
     $("plMeta").textContent=p.sub;
     const parts=$("plParts"); parts.innerHTML="";
-    if(p.yt&&p.yt.length>1) p.yt.forEach((_,k)=>{ const b=document.createElement("button"); b.type="button"; b.className="btn"; b.textContent="Deel "+(k+1); b.onclick=()=>show(p,k); parts.appendChild(b); });
-    const more=$("plMore"); if(p.page&&p.yt){ more.href=p.page; more.hidden=false; } else more.hidden=true;
+    // several videos: pick one by its still, no numbered buttons
+    if(p.vids&&p.vids.length>1) p.vids.forEach((v,k)=>{ const b=document.createElement("button"); b.type="button"; b.className="pthumb"; b.setAttribute("aria-label",`${p.title}, video ${k+1} van ${p.vids.length}`); b.innerHTML=`<img src="${v.poster}" alt="">`; b.onclick=()=>show(p,k); parts.appendChild(b); });
+    const more=$("plMore"); if(p.page){ more.href=p.page; more.removeAttribute("target"); more.textContent="Meer over dit project"; more.hidden=false; } else more.hidden=true;
     show(p,0); dlg.showModal();
   }
+  $("plMore").addEventListener("click", ()=>dlg.close());
   $("plClose").onclick=()=>dlg.close();
   dlg.addEventListener("click", e=>{ if(e.target===dlg) dlg.close(); });
   dlg.addEventListener("close", ()=>{ $("plScreen").innerHTML=""; });
