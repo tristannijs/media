@@ -276,17 +276,14 @@ dialog::backdrop{background:rgba(0,0,0,.88)}
 /* one breakpoint for the bar and page headers, so nothing jumps between two half-layouts */
 @media (max-width:1000px){
   .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .social{display:none}
-  .bar-in{height:auto;grid-template-columns:1fr;justify-items:center;padding-block:12px 8px;gap:8px}
-  .logo-link{order:-1}
-  .logo{height:36px}
-  .nav{gap:22px;flex-wrap:wrap;justify-content:center}
-  .menu{left:50%;transform:translateX(-50%);padding-top:12px}
-  html{scroll-padding-top:130px}
+  /* same three-part bar as on desktop, just tighter: pages left, logo centre, icons right */
+  .bar-in{gap:16px}
+  .nav{gap:16px;font-size:15px}
+  .logo{height:38px}
+  .social{gap:14px}
   .phead,.contact{grid-template-columns:minmax(0,1fr)}
   .phead p{max-width:60ch}
 }
-@media (max-width:1000px){ body[data-view="start"] .logo-link{display:none} body[data-view="start"] .bar-in{padding-block:14px} }
 @media (max-width:720px){
   .logo{height:26px}
   .nav{gap:16px;font-size:14px;flex-wrap:nowrap}
