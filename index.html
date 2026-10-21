@@ -168,7 +168,8 @@ body[data-view="start"] .logo-link{visibility:hidden}
 .clip::after{content:"";position:absolute;left:3px;right:3px;bottom:4px;height:8px;background:repeating-linear-gradient(90deg,rgba(0,0,0,.28) 0 1px,transparent 1px 7px),rgba(0,0,0,.1);border-radius:1px}
 .clip.hl{z-index:2;outline:2px solid var(--fg);outline-offset:0}
 .now{position:absolute;top:0;bottom:0;border-left:1px dashed #666;pointer-events:none}
-.now::after{content:"Nu";position:absolute;top:6px;left:5px;font-size:11px;color:var(--muted)}
+.now::after{content:"Nu";position:absolute;bottom:4px;left:5px;font-size:11px;color:var(--muted)}
+.clip.narrow{color:transparent}
 .playhead{position:absolute;top:0;bottom:0;border-left:1px solid var(--accent);pointer-events:none;z-index:4}
 .tl-in.has-bands .playhead::before{top:26px}
 .playhead::before{content:"";position:absolute;top:2px;left:-7px;width:13px;height:17px;background:var(--accent);clip-path:polygon(0 0,100% 0,100% 62%,50% 100%,0 62%)}
@@ -257,20 +258,23 @@ dialog::backdrop{background:rgba(0,0,0,.88)}
 .pthumb:hover{opacity:1}
 .pthumb[aria-pressed="true"]{opacity:1;outline:2px solid var(--accent);outline-offset:1px}
 
+/* one breakpoint for the bar and page headers, so nothing jumps between two half-layouts */
 @media (max-width:1000px){
   .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .social{display:none}
-  .bar-in{grid-template-columns:1fr auto}
+  .bar-in{height:auto;grid-template-columns:1fr;justify-items:center;padding-block:12px 8px;gap:8px}
+  .logo-link{order:-1}
+  .logo{height:38px}
+  .nav{gap:22px;flex-wrap:wrap;justify-content:center}
+  .menu{left:50%;transform:translateX(-50%);padding-top:12px}
+  html{scroll-padding-top:130px}
+  .phead,.contact{grid-template-columns:minmax(0,1fr)}
+  .phead p{max-width:60ch}
 }
 @media (max-width:720px){
-  .bar-in{height:auto;grid-template-columns:1fr;justify-items:center;padding-block:12px 6px;gap:8px}
-  .logo-link{order:-1}
-  .logo{height:36px}
-  .nav{gap:18px;font-size:15px;flex-wrap:wrap;justify-content:center}
-  .menu{left:50%;transform:translateX(-50%);padding-top:12px}
-  html{scroll-padding-top:120px}
+  .logo{height:34px}
+  .nav{gap:18px;font-size:15px}
   .page{padding-block:36px 16px;gap:40px}
-  .phead,.contact{grid-template-columns:minmax(0,1fr)}
   .grid{grid-template-columns:minmax(0,1fr);gap:30px}
   .doors{grid-template-columns:minmax(0,1fr)}
   .door .img{aspect-ratio:16/9}
@@ -554,7 +558,8 @@ dialog::backdrop{background:rgba(0,0,0,.88)}
     const p2=n=>String(n).padStart(2,"0");
     const tcOf=t=>{ const d=new Date(t); return p2(d.getUTCDate())+":"+p2(d.getUTCMonth()+1)+":"+d.getUTCFullYear(); };
     if(o.bands) inner.classList.add("has-bands");
-    let phT = o.now ? D(o.now) : end-DAY;
+    // the playhead rests on today, or on the end of the latest project when the timeline has no "now"
+    let phT = o.now ? D(o.now) : Math.max(...o.groups.flatMap(g=>g.items).map(p=>D(p.t1||p.t0)));
     const placePH=t=>{ ph.style.left=x(t); tcEl.textContent=tcOf(t); };
     const park=()=>placePH(phT);
     if(o.bands){ const bands=host.querySelector(".bands"); o.bands.forEach(b=>{ const s=Math.max(D(b.from),start), e=Math.min(D(b.to),end); const el=document.createElement("div"); el.className="band-l"; el.style.left=x(s); el.style.width=w(e-s); el.textContent=b.label; bands.appendChild(el); }); }
@@ -641,6 +646,8 @@ dialog::backdrop{background:rgba(0,0,0,.88)}
       // minor ticks: weeks when there is room, otherwise half months
       const minor = pxm/4.35 >= 9 ? pxm/4.35 : pxm/2;
       ruler.style.backgroundSize = Math.max(4,minor)+"px 5px";
+      // a clip too narrow for its name shows none, instead of a cut-off letter
+      clips.forEach(c=>c.classList.toggle("narrow", c.offsetWidth<56));
     }
     function setZoom(z, anchorX){
       z=Math.max(ZMIN, Math.min(ZMAX, z));
@@ -680,6 +687,10 @@ dialog::backdrop{background:rgba(0,0,0,.88)}
     addEventListener("mouseup", ()=>{ if(!drag.on) return; drag.on=false; if(drag.moved){ drag.suppress=true; setTimeout(()=>drag.suppress=false,0); } drag.moved=false; inner.classList.remove("dragging"); });
     new ResizeObserver(()=>setZoom(zoom)).observe(sc);
     setZoom(1); park();
+    // when the timeline is wider than its box, open it on the most recent part
+    const showRecent=()=>{ sc.scrollLeft=Math.max(0,(phT-start)/span*inner.offsetWidth - sc.clientWidth*0.85); };
+    showRecent(); let shownOnce=sc.clientWidth>0;
+    new ResizeObserver(()=>{ if(!shownOnce && sc.clientWidth>0){ shownOnce=true; showRecent(); } }).observe(sc);
     inner.addEventListener("focusin", e=>{ const c=e.target.closest(".clip"); if(c) hl(c.dataset.id); });
     grid.addEventListener("mouseover", e=>{ const c=e.target.closest(".card"); if(!c) return; const it=items.find(i=>i.p.id===c.dataset.id); if(!it) return; placePH(it.a); hl(it.p.id,true); });
     grid.addEventListener("mouseleave",()=>{ park(); hl(null); });
